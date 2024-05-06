@@ -60,14 +60,31 @@ npx jsr add -D @mrii/use-google-directions
 
 ## 🔧 Usage
 
-## ✨ Features
+```tsx
+import { useGoogleMapsDirectionsQuery } from 'use-google-directions';
 
-## 🛣️ Roadmap
+// or with jsr
+// import { useGoogleMapsDirectionsQuery } from '@mrii/use-google-directions';
+
+const Component: React.FC = () => {
+  /* ... */
+  const focusedTripDirectionsQuery = useGoogleMapsDirectionsQuery({
+    origin: {
+      latitude: 1,
+      longitude: 1,
+    },
+    destination: {
+      latitude: 3,
+      longitude: 3,
+    },
+  });
+
+  const response = focusedTripDirectionsQuery.data?.data;
+
+  const points = useDirectionPolylinePoints({ response, precision: 'hight' });
+
+  console.log('available_travel_modes', response.available_travel_modes);
+};
+```
 
 ## 🧰 API
-
-## 🔍 Options
-
-| key   | cli          | default | description               | version |
-| ----- | ------------ | :-----: | ------------------------- | ------- |
-| `cwd` | `---cwd, -c` |  `"."`  | root dir path of your lib | `1.0.0` |

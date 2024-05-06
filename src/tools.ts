@@ -45,8 +45,10 @@ export const decodeStepsToPolylinePoints = (
   return points;
 };
 
-export const calculateDirectionDurationInMs = (legs: { duration?: TextValueObject }[]) =>
-  legs.reduce((acc, { duration }) => acc + (duration?.value ?? 0), 0);
+export const calculateDirectionDurationInMs = (
+  legs: { duration?: TextValueObject }[]
+): number => legs.reduce((acc, { duration }) => acc + (duration?.value ?? 0), 0);
 
-export const calculateDirectionDistanceInM = (legs: { distance?: TextValueObject }[]) =>
-  legs.reduce((acc, { distance }) => acc + (distance?.value ?? 0), 0);
+export const calculateDirectionDistanceInM = (
+  legs: { distance?: TextValueObject }[]
+): number => legs.reduce((acc, { distance }) => acc + (distance?.value ?? 0), 0);

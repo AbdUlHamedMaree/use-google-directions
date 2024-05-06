@@ -1,4 +1,4 @@
-import type { AxiosRequestConfig } from 'axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import type { LatLng } from './types/lat-lng';
 import type { BoundingBox } from './types/bounding-box';
@@ -202,7 +202,7 @@ export const getGoogleMapsDirections = (
     optimizeWaypoints,
   }: GetGoogleMapsDirectionsArg = {},
   config?: AxiosRequestConfig
-) => {
+): Promise<AxiosResponse<GetGoogleMapsDirectionsResponseBody, any>> => {
   const stringifiedWaypoints = waypoints?.map(stringifyLatLngString).join('|');
 
   return axios.get<GetGoogleMapsDirectionsResponseBody>(
@@ -239,5 +239,5 @@ export const getGoogleMapsDirections = (
   );
 };
 
-const stringifyLatLngString = ({ latitude, longitude }: LatLng) =>
+const stringifyLatLngString = ({ latitude, longitude }: LatLng): string =>
   `${latitude},${longitude}`;

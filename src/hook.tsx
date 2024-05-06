@@ -1,4 +1,9 @@
-import type { UseMutationOptions, UseQueryOptions } from '@tanstack/react-query';
+import type {
+  UseMutationOptions,
+  UseMutationResult,
+  UseQueryOptions,
+  UseQueryResult,
+} from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { useMemo } from 'react';
@@ -13,6 +18,7 @@ import {
   calculateDirectionDurationInMs,
   decodeStepsToPolylinePoints,
 } from './tools';
+import type { LatLng } from './types/lat-lng';
 
 export const useGoogleMapsDirectionsQuery = (
   arg?: GetGoogleMapsDirectionsArg,
@@ -25,7 +31,10 @@ export const useGoogleMapsDirectionsQuery = (
     >,
     'queryKey' | 'queryFn'
   >
-) =>
+): UseQueryResult<
+  AxiosResponse<GetGoogleMapsDirectionsResponseBody, any>,
+  AxiosError<unknown, any>
+> =>
   useQuery<
     AxiosResponse<GetGoogleMapsDirectionsResponseBody>,
     AxiosError,
@@ -44,7 +53,12 @@ export const useGoogleMapsDirectionsMutation = (
     GetGoogleMapsDirectionsArg,
     unknown
   >
-) =>
+): UseMutationResult<
+  AxiosResponse<GetGoogleMapsDirectionsResponseBody, any>,
+  AxiosError<unknown, any>,
+  GetGoogleMapsDirectionsArg,
+  unknown
+> =>
   useMutation<
     AxiosResponse<GetGoogleMapsDirectionsResponseBody>,
     AxiosError,
@@ -63,7 +77,7 @@ export type UseDirectionPolylinePointsArg = {
 export const useDirectionPolylinePoints = ({
   response,
   precision = 'low',
-}: UseDirectionPolylinePointsArg) => {
+}: UseDirectionPolylinePointsArg): LatLng[] => {
   const points = useMemo(() => {
     if (!response) return [];
 
@@ -87,13 +101,17 @@ export type UseDirectionDurationArg = {
   response?: GetGoogleMapsDirectionsResponseBody;
 };
 
-export const useDirectionDurationInMs = ({ response }: UseDirectionDurationArg) => {
+export const useDirectionDurationInMs = ({
+  response,
+}: UseDirectionDurationArg): number | undefined => {
   const legs = response?.routes[0].legs;
 
   return useMemo(() => (legs ? calculateDirectionDurationInMs(legs) : undefined), [legs]);
 };
 
-export const useDirectionDistanceInM = ({ response }: UseDirectionDurationArg) => {
+export const useDirectionDistanceInM = ({
+  response,
+}: UseDirectionDurationArg): number | undefined => {
   const legs = response?.routes[0].legs;
 
   return useMemo(() => (legs ? calculateDirectionDistanceInM(legs) : undefined), [legs]);

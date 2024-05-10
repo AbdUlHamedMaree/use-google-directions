@@ -1,6 +1,6 @@
 {
   "name": "use-google-directions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": false,
   "description": "Small library that provides hooks for google direction api",
   "keywords": [

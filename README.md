@@ -23,16 +23,16 @@ Small library that provides hooks for google direction api
 
 This package is using [`lbundle`](https://github.com/AbdUlHamedMaree/lbundle) as bundler ✨
 
-## 🚀 Motivation
+# 🚀 Motivation
 
-There is always this repeated pattern for creating a library while following best practices that you need to maintain across all of your libraries,
-but then I thought maybe creating a library for bundling libraries is a good idea.
+There was a library to render directions on react native, it has some limitations (like not being able to get more information from the API call to google),
+and the library had no updates for a long time and no way to contribute, so created this package which takes other approach for giving data.
 
-## 💾 install
+# 💾 install
 
-This package requires the following packages `@tanstack/react-query>=5.0.0`, `axios>=1.0.0` and `react>=16.0.0`
+This package requires the following packages `@tanstack/react-query>=5.0.0`, `axios>=1.0.0` and `react>=16.0.0`, so make sure to have them in your project.
 
-### NPM registry
+## NPM registry
 
 ```bash
 # npm
@@ -48,7 +48,7 @@ pnpm i -D use-google-directions
 bun i -D use-google-directions
 ```
 
-### JSR registry
+## JSR registry
 
 ```bash
 # deno
@@ -58,7 +58,7 @@ deno add -D @mrii/use-google-directions
 npx jsr add -D @mrii/use-google-directions
 ```
 
-## 🔧 Usage
+# 🔧 Usage
 
 ```tsx
 import { useGoogleMapsDirectionsQuery } from 'use-google-directions';
@@ -68,6 +68,8 @@ import { useGoogleMapsDirectionsQuery } from 'use-google-directions';
 
 const Component: React.FC = () => {
   /* ... */
+
+  // react-query Query result
   const focusedTripDirectionsQuery = useGoogleMapsDirectionsQuery({
     origin: {
       latitude: 1,
@@ -77,14 +79,27 @@ const Component: React.FC = () => {
       latitude: 3,
       longitude: 3,
     },
+
+    // many other props
   });
 
+  // the result from google API
   const response = focusedTripDirectionsQuery.data?.data;
 
+  // points that can be drawn using Maps Polyline
   const points = useDirectionPolylinePoints({ response, precision: 'hight' });
 
-  console.log('available_travel_modes', response.available_travel_modes);
+  // the distance of the route in meters
+  const distance = useDirectionDistanceInM({ response });
+
+  // the duration of the route in ms
+  const duration = useDirectionDurationInMs({ response });
+
+  // polyline using react-native-maps Polyline
+  const reactNativeMapsPolyline = (
+    <Polyline coordinates={points} strokeWidth={4} strokeColor='#0007' />
+  );
 };
 ```
 
-## 🧰 API
+# 🧰 API
